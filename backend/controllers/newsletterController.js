@@ -30,6 +30,11 @@ const getOneNewsletter = async (req, res) => {
 const postNewsletter = async (req, res) => {
   try {
     const newNewsletter = req.body;
+    console.log(newNewsletter);
+    if (req.file) {
+      newNewsletter.filePath = req.file.path; // Store uploaded file path
+    }
+
     const createdNewsletter = await Newsletter.create(newNewsletter);
     res
       .status(200)

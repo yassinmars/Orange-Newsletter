@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mail, Edit, Trash, Plus } from "lucide-react";
 import {
   Table,
@@ -22,11 +21,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import {
   Select,
   SelectContent,
@@ -37,82 +32,54 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import CreateNewsletter from "./CreateNewsletter";
 import LoginForm from "./LoginForm";
+import UpdateNewsLetter from "./UpdateNewsletter";
+import axios from "axios";
 
-interface Newsletter {
-  id: number;
-  title: string;
-  status: "draft" | "scheduled" | "sent";
-  scheduledDate?: string;
-  createdAt: string;
-}
+// interface Newsletter {
+//   id: number;
+//   Title: string;
+//   Description: string;
+//   Links: string;
+//   Video: string;
+//   Status: "draft" | "scheduled" | "sent"; // Assuming status is available
+// }
 
 const NewsletterList = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
-  const [newsletters, setNewsletters] = useState<Newsletter[]>([
-    {
-      id: 1,
-      title: "Q4 Network Expansion Update",
-      status: "sent",
-      createdAt: "2024-02-20",
-    },
-    {
-      id: 2,
-      title: "New 5G Coverage Areas",
-      status: "scheduled",
-      scheduledDate: "2024-03-01",
-      createdAt: "2024-02-21",
-    },
-    {
-      id: 3,
-      title: "Customer Service Improvements",
-      status: "draft",
-      createdAt: "2024-02-22",
-    },
-  ]);
+  const [newsletters, setNewsletters] = useState([]); // Define the state as Newsletter array
+  const [selectedNewsletterId, setSelectedNewsletterId] = useState();
+
+  useEffect(() => {
+    // Fetch newsletters data using axios
+    axios
+      .get("http://localhost:6005/api/newsletter")
+      .then((res) => {
+        setNewsletters(res.data.Newsletter); // Set the newsletters state with the extracted data
+      })
+      .catch((err) => console.error("Error fetching newsletters:", err));
+  }, []);
+
+  const handleDelete = (id: number) => {
+    axios
+      .delete(`http://localhost:6005/api/deleteNewsletter/${id}`)
+      .then(() => {
+        console.log("Newsletter deleted successfully");
+        setNewsletters(
+          newsletters.filter((newsletter) => newsletter.id !== id)
+        );
+        toast({ title: "Newsletter deleted successfully", status: "success" });
+      })
+      .catch((err) => {
+        console.error("Error deleting newsletter:", err);
+        toast({ title: "Failed to delete newsletter", status: "error" });
+      });
+  };
 
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
-  const handleDelete = (id: number) => {
-    setNewsletters(newsletters.filter((newsletter) => newsletter.id !== id));
-    toast({
-      title: "Newsletter deleted",
-      description: "The newsletter has been successfully deleted.",
-    });
-  };
-
-  const handleStatusChange = (id: number, newStatus: "draft" | "scheduled" | "sent") => {
-    setNewsletters(newsletters.map(newsletter => {
-      if (newsletter.id === id) {
-        return { ...newsletter, status: newStatus };
-      }
-      return newsletter;
-    }));
-    
-    toast({
-      title: "Status updated",
-      description: `Newsletter status changed to ${newStatus}`,
-    });
-  };
-
-  const handleCreateNewsletter = (newsletterData: {
-    title: string;
-    content: string;
-    scheduledDate?: string;
-  }) => {
-    const newNewsletter: Newsletter = {
-      id: newsletters.length + 1,
-      title: newsletterData.title,
-      status: newsletterData.scheduledDate ? "scheduled" : "draft",
-      scheduledDate: newsletterData.scheduledDate,
-      createdAt: new Date().toISOString().split('T')[0],
-    };
-    
-    setNewsletters([...newsletters, newNewsletter]);
-  };
-
   const filteredNewsletters = newsletters.filter((newsletter) =>
-    newsletter.title.toLowerCase().includes(searchTerm.toLowerCase())
+    newsletter.Title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (!isAuthenticated) {
@@ -133,9 +100,12 @@ const NewsletterList = () => {
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[600px]">
-            <CreateNewsletter 
-              onClose={() => document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click()}
-              onSubmit={handleCreateNewsletter}
+            <CreateNewsletter
+              onClose={() =>
+                document
+                  .querySelector<HTMLButtonElement>('[data-state="open"]')
+                  ?.click()
+              }
             />
           </DialogContent>
         </Dialog>
@@ -164,16 +134,19 @@ const NewsletterList = () => {
           <TableBody>
             {filteredNewsletters.map((newsletter) => (
               <TableRow key={newsletter.id}>
-                <TableCell className="font-medium">{newsletter.title}</TableCell>
+                <TableCell className="font-medium">
+                  {newsletter.Title}
+                </TableCell>
                 <TableCell>
                   <Select
-                    defaultValue={newsletter.status}
-                    onValueChange={(value: "draft" | "scheduled" | "sent") => 
-                      handleStatusChange(newsletter.id, value)
-                    }
+                    // You can manage the status of the newsletter with a handler
+                    defaultValue={newsletter.Status}
+                    onValueChange={(value: "draft" | "scheduled" | "sent") => {
+                      // Update status logic here (optional)
+                    }}
                   >
                     <SelectTrigger className="w-[130px]">
-                      <SelectValue />
+                      <SelectValue>{newsletter.Status}</SelectValue>
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="draft">
@@ -194,22 +167,26 @@ const NewsletterList = () => {
                     </SelectContent>
                   </Select>
                 </TableCell>
-                <TableCell>{newsletter.createdAt}</TableCell>
-                <TableCell>
-                  {newsletter.scheduledDate || "-"}
-                </TableCell>
+                <TableCell>{newsletter.Description}</TableCell>
+                <TableCell>{newsletter.Links}</TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end space-x-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="icon">
+                        <Button variant="outline" size="icon" onClick={() => {setSelectedNewsletterId(newsletter.id)}}>
                           <Edit className="h-4 w-4 text-orange-500" />
                         </Button>
                       </DialogTrigger>
                       <DialogContent className="sm:max-w-[600px]">
-                        <CreateNewsletter 
-                          onClose={() => document.querySelector<HTMLButtonElement>('[data-state="open"]')?.click()}
-                          onSubmit={handleCreateNewsletter}
+                        <UpdateNewsLetter
+                          id={selectedNewsletterId}
+                          onClose={() =>
+                            document
+                              .querySelector<HTMLButtonElement>(
+                                '[data-state="open"]'
+                              )
+                              ?.click()
+                          }
                         />
                       </DialogContent>
                     </Dialog>
@@ -223,7 +200,8 @@ const NewsletterList = () => {
                         <AlertDialogHeader>
                           <AlertDialogTitle>Delete Newsletter</AlertDialogTitle>
                           <AlertDialogDescription>
-                            Are you sure you want to delete this newsletter? This action cannot be undone.
+                            Are you sure you want to delete this newsletter?
+                            This action cannot be undone.
                           </AlertDialogDescription>
                         </AlertDialogHeader>
                         <AlertDialogFooter>

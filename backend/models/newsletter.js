@@ -11,9 +11,11 @@ const User = sequelize.define(
     },
     Title: {  
       type: DataTypes.STRING,
+      allowNull:false,
     },
     Description: {
       type: DataTypes.STRING,
+      allowNull:true,
     },
     Links:{
       type: DataTypes.STRING,
@@ -21,9 +23,11 @@ const User = sequelize.define(
     },
     Video:{
       type: DataTypes.STRING,
+      allowNull:true,
     },
     Image:{
       type: DataTypes.STRING,
+      allowNull:true,
     },
     Date:{
       type: DataTypes.STRING,

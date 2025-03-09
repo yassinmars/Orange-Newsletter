@@ -1,6 +1,7 @@
-
+import { useState } from "react";
 import NewsletterList from "@/components/NewsletterList";
-import { UserRound, LogOut } from "lucide-react";
+import SendNewsletter from "@/components/SendNewsletter";
+import { UserRound, LogOut, Mail, List } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -8,12 +9,14 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const Index = () => {
   const { toast } = useToast();
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const adminEmail = "admin@orange.com";
+  const [activeTab, setActiveTab] = useState("manage");
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
@@ -67,7 +70,31 @@ const Index = () => {
       </header>
       
       <main className="container mx-auto px-4 py-8">
-        <NewsletterList />
+        {isAuthenticated ? (
+          <Tabs 
+            defaultValue="manage" 
+            value={activeTab} 
+            onValueChange={setActiveTab}
+            className="space-y-4"
+          >
+            <TabsList className="grid w-full max-w-md grid-cols-2">
+              <TabsTrigger value="manage" className="flex items-center gap-2">
+                <List className="h-4 w-4" /> Manage Newsletters
+              </TabsTrigger>
+              <TabsTrigger value="send" className="flex items-center gap-2">
+                <Mail className="h-4 w-4" /> Send Newsletters
+              </TabsTrigger>
+            </TabsList>
+            <TabsContent value="manage">
+              <NewsletterList />
+            </TabsContent>
+            <TabsContent value="send">
+              <SendNewsletter />
+            </TabsContent>
+          </Tabs>
+        ) : (
+          <NewsletterList />
+        )}
       </main>
     </div>
   );

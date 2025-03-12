@@ -7,7 +7,10 @@ const storage = multer.diskStorage({
       cb(null, path.join(__dirname, "../assets/"));
     },
     filename: function (req, file, cb) {
-      cb(null, Date.now() + "-" + file.originalname);
+      const uniqueFilename = Date.now() + "-" + file.originalname
+      cb(null, uniqueFilename);
+
+      req.filePath = `/assets/${uniqueFilename}`;
     },
   });
 

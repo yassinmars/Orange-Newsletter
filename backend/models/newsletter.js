@@ -35,6 +35,12 @@ const User = sequelize.define(
     Category:{
       type: DataTypes.STRING,
     },
+    Status:{
+      type: DataTypes.ENUM({
+        values: ['draft', 'scheduled', 'sent'],
+        defaultValue : 'draft',
+      })
+    },
   },
   { timestamps: false },
 );

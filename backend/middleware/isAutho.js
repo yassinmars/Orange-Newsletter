@@ -1,6 +1,6 @@
-const isAutho = (allowedRoles) => {
+const isAutho = (/*allowedRoles*/) => {
   return (req, res, next) => {
-    if (req.user && allowedRoles.includes(req.user.role) /*&& req.user.id == req.params.id*/) {
+    if (req.admin /*&& allowedRoles.includes(req.user.role) && req.user.id == req.params.id*/) {
       next();
     } else {
       res

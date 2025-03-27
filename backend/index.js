@@ -1,11 +1,10 @@
 const express = require("express");
 const newsletterRoute = require("./routes/newsletterRoute");
+const adminRoute = require("./routes/adminRoute");
 const { connectDb } = require("./configuration/connectdb");
 const cors = require("cors");
 const dotenv = require("dotenv");
-const http = require("http");
 const app = express();
-
 
 dotenv.config();
 app.use(cors());
@@ -23,3 +22,4 @@ app.listen(port, (err) => {
 
 app.use(express.json());
 app.use("/api", newsletterRoute);
+app.use("/api", adminRoute);

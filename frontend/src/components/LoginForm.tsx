@@ -1,84 +1,105 @@
-
-import { useState, useEffect, React } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useState, useEffect } from "react";
+import "boosted/dist/css/boosted.min.css";
 
 const LoginForm = () => {
-  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const [toastType, setToastType] = useState(""); 
 
   useEffect(() => {
-    // Clear authentication on component mount
     localStorage.removeItem("isAuthenticated");
   }, []);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // For demo purposes, hardcoded credentials
     if (email === "admin@orange.com" && password === "admin123") {
       localStorage.setItem("isAuthenticated", "true");
-      window.location.reload();
-      toast({
-        title: "Success",
-        description: "Logged in successfully",
-      });
+      setToastMessage("Logged in successfully");
+      setToastType("success");
+      setShowToast(true);
+      setTimeout(() => window.location.reload(), 1000);
     } else {
-      toast({
-        title: "Error",
-        description: "Invalid credentials",
-        variant: "destructive",
-      });
+      setToastMessage("Invalid credentials");
+      setToastType("danger");
+      setShowToast(true);
     }
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50">
-      <div className="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow">
-        <div className="text-center">
-          <img
-            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/2000px-Orange_logo.svg.png"
-            alt="Orange Logo"
-            className="mx-auto h-12"
-          />
-          <h2 className="mt-6 text-3xl font-bold text-gray-900">
-            Admin Login
-          </h2>
-        </div>
-        <form onSubmit={handleLogin} className="mt-8 space-y-6">
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+    <div className="vh-100 d-flex flex-column">
+      <div className="flex-grow-1 d-flex align-items-center justify-content-center">
+        <div className="card shadow p-4" style={{ width: "350px" }}>
+          <div className="text-center">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/2000px-Orange_logo.svg.png"
+              alt="Orange Logo"
+              className="mb-3"
+              style={{ height: "50px" }}
+            />
+            <h2 className="h4 fw-bold">Admin Login</h2>
+          </div>
+          <form onSubmit={handleLogin} className="mt-3">
+            <div className="mb-3">
+              <label htmlFor="email" className="form-label">
                 Email
               </label>
-              <Input
-                id="email"
+              <input
                 type="email"
+                className="form-control"
+                id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@orange.com"
                 required
               />
             </div>
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <div className="mb-3">
+              <label htmlFor="password" className="form-label">
                 Password
               </label>
-              <Input
-                id="password"
+              <input
                 type="password"
+                className="form-control"
+                id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
               />
             </div>
+            <button type="submit" className="btn btn-warning w-100">
+              Sign in
+            </button>
+          </form>
+        </div>
+      </div>
+
+      {/* Boosted Toast Notification */}
+      <div
+        className="toast-container position-fixed top-0 end-0 p-3"
+        style={{ zIndex: 1050 }}
+      >
+        <div
+          className={`toast fade ${showToast ? "show" : "hide"}`}
+          role="alert"
+          aria-live="assertive"
+          aria-atomic="true"
+        >
+          <div className={`toast-header bg-${toastType} text-white`}>
+            
+            <strong className="me-auto">
+                Notification
+              </strong>
+            <button
+              type="button"
+              className="btn-close btn-close-white"
+              onClick={() => setShowToast(false)}
+            ></button>
           </div>
-          <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600">
-            Sign in
-          </Button>
-        </form>
+          <div className="toast-body">{toastMessage}</div>
+        </div>
       </div>
     </div>
   );

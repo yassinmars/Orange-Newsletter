@@ -1,4 +1,3 @@
-
 import NewsletterList from "@/components/NewsletterList";
 import { UserRound, LogOut } from "lucide-react";
 import {
@@ -8,20 +7,20 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
+import LoginForm from "../components/LoginForm";
 
 const Index = () => {
-  const { toast } = useToast();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
   const adminEmail = "admin@orange.com";
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     window.location.reload();
-    toast({
-      title: "Success",
-      description: "Logged out successfully",
-    });
+    setToastMessage("Logged out successfully");
+    setShowToast(true);
   };
 
   return (
@@ -37,7 +36,8 @@ const Index = () => {
               />
               <h1 className="text-xl font-bold text-gray-900">Newsletter Management</h1>
             </div>
-            {isAuthenticated && (
+            
+            {/* {isAuthenticated && (
               <div className="flex items-center space-x-4">
                 <TooltipProvider>
                   <Tooltip>
@@ -61,14 +61,31 @@ const Index = () => {
                   <LogOut className="h-5 w-5" />
                 </Button>
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </header>
       
       <main className="container mx-auto px-4 py-8">
-        <NewsletterList />
+        <LoginForm />
       </main>
+
+      {/* Bootstrap Toast Notification */}
+      {showToast && (
+        <div className="toast-container position-fixed top-0 end-0 p-3" style={{ zIndex: 1050 }}>
+          <div className="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+            <div className="toast-header bg-success text-white">
+              <strong className="me-auto">Success</strong>
+              <button
+                type="button"
+                className="btn-close btn-close-white"
+                onClick={() => setShowToast(false)}
+              ></button>
+            </div>
+            <div className="toast-body">{toastMessage}</div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

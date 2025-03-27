@@ -83,33 +83,5 @@ const deleteNewsletter = async(req, res) =>{
   }
 }
 
-// const signIn = async (req, res) => {
-//   const Newsletter = req.body;
-//   try {
-//     const foundNewsletter = await Newsletter.findOne({ where: { email: Newsletter.email } });
-//     if (foundUser) {
-//       if (user.password === foundUser.password) {
-//         const token = jwt.sign(
-//           { 
-//             id: foundUser.id, 
-//             role: foundUser.role, 
-//             email: foundUser.email,
-//             nickname: foundUser.nickname,
-//            },
-//           process.env.JWT_SECRET
-//         );
-//         res.status(200).json({ user: foundUser, token: token});
-//       } else {
-//         res.status(401).json({ msg: "wrong email or password" });
-//       }
-//     } else {
-//       res.status(400).json({ msg: "User is not registered" });
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ msg: "internal server error" });
-//   }
-// };
 
-
-module.exports = { getOneNewsletter, getNewsletter, postNewsletter, /*signIn,*/ putNewsletter, deleteNewsletter};
+module.exports = {getNewsletter, postNewsletter, putNewsletter, deleteNewsletter, getOneNewsletter};

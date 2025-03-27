@@ -8,8 +8,8 @@ const isAuth = (req, res, next) =>{
             return res.status(401).json({msg:"No token, authorization denied"});
         }
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded;
-        console.log(req.user);
+        req.admin = decoded;
+        console.log(req.admin);
         next();
     } catch (error) {
         console.log(error);

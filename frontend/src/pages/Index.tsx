@@ -1,6 +1,7 @@
 import LoginForm from "../components/LoginForm";
 import { useState } from "react";
 import "boosted/dist/css/boosted.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 
 const Index = () => {

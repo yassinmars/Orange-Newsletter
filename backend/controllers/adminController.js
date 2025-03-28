@@ -30,15 +30,15 @@ const postAdmin = async (req, res) => {
 const signIn = async (req, res) => {
   const admin = req.body;
   try {
-    const foundadmin = await Admin.findOne({ where: { email: admin.Email } });
+    const foundadmin = await Admin.findOne({ where: { Email: admin.Email } });
     if (foundadmin) {
-      if (admin.password === foundadmin.password) {
+      if (admin.Password === foundadmin.Password) {
         const token = jwt.sign(
           {
             id: foundadmin.id,
             // role: foundadmin.role,
-            email: foundadmin.Email,
-            password: foundadmin.Password,
+            Email: foundadmin.Email,
+            Password: foundadmin.Password,
           },
           process.env.JWT_SECRET
         );

@@ -1,30 +1,43 @@
 import { useState, useEffect } from "react";
 import "boosted/dist/css/boosted.min.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState(""); 
+  const [toastType, setToastType] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.removeItem("isAuthenticated");
+    const token = localStorage.removeItem("token");
   }, []);
+
+  const LoginData = {
+    Email: Email,
+    Password: Password,
+  };
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    if (email === "admin@orange.com" && password === "admin123") {
-      localStorage.setItem("isAuthenticated", "true");
-      setToastMessage("Logged in successfully");
-      setToastType("success");
-      setShowToast(true);
-      setTimeout(() => window.location.reload(), 1000);
-    } else {
-      setToastMessage("Invalid credentials");
-      setToastType("danger");
-      setShowToast(true);
-    }
+    axios
+      .post("http://localhost:6005/api/signIn", LoginData)
+      .then((res) => {
+        console.log("Response received:", res.data);
+        const token = res.data.token;
+        if (token) {
+          navigate("/home");
+          localStorage.setItem("token", token);
+        } else {
+          alert(res.data.msg || "Invalid credentials or login failed.");
+        }
+      })
+      .catch((err) => {
+        console.error("Login error:", err.response?.data || err);
+        alert(err.response?.data?.msg || "There was an error during login.");
+      });
   };
 
   return (
@@ -49,7 +62,7 @@ const LoginForm = () => {
                 type="email"
                 className="form-control"
                 id="email"
-                value={email}
+                value={Email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="admin@orange.com"
                 required
@@ -63,7 +76,7 @@ const LoginForm = () => {
                 type="password"
                 className="form-control"
                 id="password"
-                value={password}
+                value={Password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
@@ -88,10 +101,7 @@ const LoginForm = () => {
           aria-atomic="true"
         >
           <div className={`toast-header bg-${toastType} text-white`}>
-            
-            <strong className="me-auto">
-                Notification
-              </strong>
+            <strong className="me-auto">Notification</strong>
             <button
               type="button"
               className="btn-close btn-close-white"
@@ -104,5 +114,4 @@ const LoginForm = () => {
     </div>
   );
 };
-
 export default LoginForm;

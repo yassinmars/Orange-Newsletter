@@ -35,19 +35,10 @@ import LoginForm from "./LoginForm";
 import UpdateNewsLetter from "./UpdateNewsletter";
 import axios from "axios";
 
-// interface Newsletter {
-//   id: number;
-//   Title: string;
-//   Description: string;
-//   Links: string;
-//   Video: string;
-//   Status: "draft" | "scheduled" | "sent"; // Assuming status is available
-// }
-
 const NewsletterList = () => {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
-  const [newsletters, setNewsletters] = useState([]); // Define the state as Newsletter array
+  const [newsletters, setNewsletters] = useState([]);
   const [selectedNewsletterId, setSelectedNewsletterId] = useState();
 
   useEffect(() => {
@@ -76,15 +67,10 @@ const NewsletterList = () => {
       });
   };
 
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
 
   const filteredNewsletters = newsletters.filter((newsletter) =>
     newsletter.Title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
-  if (!isAuthenticated) {
-    return <LoginForm />;
-  }
+  );  
 
   return (
     <div className="space-y-4">

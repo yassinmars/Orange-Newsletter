@@ -55,9 +55,9 @@ const CreateNewsletter = ({ onClose }: { onClose: () => void }) => {
   
 
   return (
-    <div className="space-y-4 p-4">
+    <div>
       <h2 className="text-2xl font-bold text-gray-900">Create Newsletter</h2>
-      <form onSubmit={handleSubmit} className="space-y-4" enctype="multipart/form-data">
+      <form onSubmit={handleSubmit} className="space-y-1" enctype="multipart/form-data">
         <div>
           <label
             htmlFor="Title"

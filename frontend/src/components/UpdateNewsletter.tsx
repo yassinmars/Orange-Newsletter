@@ -49,10 +49,10 @@ const UpdateNewsLetter = ({ onClose, id }) => {
   };
 
   return (
-    <div className="space-y-4 p-4">
+    <div>
       <h2 className="text-2xl font-bold text-gray-900">Update Newsletter</h2>
       <form
-        className="space-y-4"
+        className="space-y-1"
         onSubmit={(e) => {
           handleUpdate(e);
         }}

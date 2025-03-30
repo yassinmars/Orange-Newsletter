@@ -7,9 +7,9 @@ import NotFound from "./pages/NotFound";
 import NewsletterList from "./components/NewsletterList";
 import LoginForm from "./components/LoginForm";
 import Navbar from "./pages/NavBar";
-import "boosted/dist/css/boosted.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Homepage from "./components/Homepage";
+import Templates from "./components/ui/Templates";
+
 
 const queryClient = new QueryClient();
 
@@ -39,6 +39,7 @@ const AppContent = () => {
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="/news" element={<NewsletterList />} />
         <Route path="/home" element={<Homepage />} />
+        <Route path="/templates" element={<Templates />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

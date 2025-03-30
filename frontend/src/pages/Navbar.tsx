@@ -1,39 +1,68 @@
-import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import "boosted/dist/css/boosted.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 
 function Navbar() {
   const navigate = useNavigate();
-
   const handleLogout = () => {
-    navigate('/'); // Redirect to login page
+    navigate("/"); 
   };
 
-  return (  
-    <nav className="navbar navbar-expand-lg navbar-dark" style={{ backgroundColor: '#000' }}>
+  return (
+    <nav
+      className="navbar navbar-expand-lg navbar-dark"
+      data-bs-theme="dark"
+      style={{ backgroundColor: "#000" }}
+    >
       <div className="container-fluid">
-        <a className="navbar-brand" href="/home" style={{ color: '#ff7f32' }}>
-          <img src="https://univ-internationale.com/sites/default/files/orange-tunisie.png" alt="Orange Logo" style={{ height: '70px' }} />
+        <a className="navbar-brand" href="/home" style={{ color: "#ff7f32" }}>
+          <img
+            src="https://univ-internationale.com/sites/default/files/orange-tunisie.png"
+            alt="Orange Logo"
+            style={{ height: "70px" }}
+          />
         </a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <NavLink to="/home" className="nav-link text-white" activeClassName="active-link">Home</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/news" className="nav-link text-white" activeClassName="active-link">News</NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/" className="nav-link text-white" activeClassName="active-link">Settings</NavLink>
-            </li>
-          </ul>
-          {/* <button style={{}} className="btn logout-btn ms-3" onClick={handleLogout}>Log Out</button> */}
-        </div>
+
+        <ul className="navbar-nav d-flex w-100">
+          <li className="nav-item">
+            <NavLink
+              to="/home"
+              className="nav-link text-white"
+              activeClassName="active-link"
+            >
+              Home
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              to="/news"
+              className="nav-link text-white"
+              activeClassName="active-link"
+            >
+              News
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              to="/templates"
+              className="nav-link text-white"
+              activeClassName="active-link"
+            >
+              Templates
+            </NavLink>
+          </li>
+
+          {/* Log out button on the far right */}
+          <li className="ms-auto">
+            <button
+              className="btn btn-primary logout-btn"
+              onClick={handleLogout}
+            >
+              Log out
+            </button>
+          </li>
+        </ul>
       </div>
+
       <style>
         {`
           .navbar-nav .nav-link:hover {

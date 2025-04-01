@@ -11,7 +11,7 @@ function Navbar() {
     <nav
       className="navbar navbar-expand-lg navbar-dark"
       data-bs-theme="dark"
-      style={{ backgroundColor: "#000" }}
+      style={{ backgroundColor: "#000"}}
     >
       <div className="container-fluid">
         <a className="navbar-brand" href="/home" style={{ color: "#ff7f32" }}>

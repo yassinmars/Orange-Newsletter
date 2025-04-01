@@ -73,7 +73,7 @@ const NewsletterList = () => {
   );  
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 p-4">
       <div className="flex justify-between items-center">
         <div className="flex items-center space-x-2">
           <Mail className="h-5 w-5 text-orange-500" />

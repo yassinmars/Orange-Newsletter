@@ -9,7 +9,8 @@ import LoginForm from "./components/LoginForm";
 import Navbar from "./pages/NavBar";
 import Homepage from "./components/Homepage";
 import Templates from "./components/ui/Templates";
-
+import Newsletter from "./pages/Newsletter";
+import Footer from "./pages/Footer";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,8 @@ const App = () => {
 const AppContent = () => {
   const location = useLocation();
   const hidenavbar = location.pathname === "/";
+  const hideFooter = location.pathname === "/";
+
 
   return (
     <>
@@ -37,11 +40,12 @@ const AppContent = () => {
       <Routes>
         <Route path="/" element={<LoginForm />} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="/news" element={<NewsletterList />} />
+        <Route path="/news" element={<Newsletter />} />
         <Route path="/home" element={<Homepage />} />
         <Route path="/templates" element={<Templates />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
+      {!hideFooter && <Footer />}
     </>
   );
 };

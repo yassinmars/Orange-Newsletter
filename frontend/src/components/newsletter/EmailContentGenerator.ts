@@ -1,4 +1,3 @@
-
 import { Newsletter } from "@/types/newsletter";
 
 export const generateEmailContent = (selectedItems: Newsletter[]): { subject: string, body: string } => {

@@ -1,42 +1,46 @@
 
 import { useState, useEffect } from "react";
 import { Mail, Eye } from "lucide-react";
-import { getNewsletters } from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Newsletter } from "@/types/newsletter";
 import NewsletterGrid from "./newsletter/NewsletterGrid";
 import SendDialog from "./newsletter/SendDialog";
 import { generateEmailContent, openEmailClient } from "./newsletter/EmailContentGenerator";
+import { useContext } from "react";
+import { NewsletterContext } from "../context/NewsletterContext";
 
 const SendNewsletter = () => {
   const { toast } = useToast();
-  const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
+  // const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [selectedNewsletters, setSelectedNewsletters] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [previewMode, setPreviewMode] = useState(false);
 
-  useEffect(() => {
-    fetchNewsletters();
-  }, []);
+  // useEffect(() => {
+  //   fetchNewsletters();
+  // }, []);
 
-  const fetchNewsletters = async () => {
-    try {
-      setIsLoading(true);
-      const data = await getNewsletters();
-      // Ensure we're setting an array
-      setNewsletters(Array.isArray(data) ? data : []);
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to fetch newsletters",
-        variant: "destructive",
-      });
-      setNewsletters([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { newsletters } = useContext(NewsletterContext); // Access data from context
+  console.log(newsletters);
+
+  // const fetchNewsletters = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     const data = await getNewsletters();
+  //     // Ensure we're setting an array
+  //     setNewsletters(Array.isArray(data) ? data : []);
+  //   } catch (error) {
+  //     toast({
+  //       title: "Error",
+  //       description: "Failed to fetch newsletters",
+  //       variant: "destructive",
+  //     });
+  //     setNewsletters([]);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   const toggleNewsletter = (id: number) => {
     setSelectedNewsletters((prev) =>
@@ -68,12 +72,12 @@ const SendNewsletter = () => {
     ? newsletters.filter((newsletter) => selectedNewsletters.includes(newsletter.id))
     : newsletters;
 
-  if (isLoading) {
-    return <div className="text-center py-10">Loading newsletters...</div>;
-  }
+  // if (isLoading) {
+  //   return <div className="text-center py-10">Loading newsletters...</div>;
+  // }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5 p-4">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center space-x-2">
           <Mail className="h-5 w-5 text-orange-500" />

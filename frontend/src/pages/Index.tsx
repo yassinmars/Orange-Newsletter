@@ -20,7 +20,7 @@ const Index = () => {
     <div>
       {/* Header using Boosted/Bootstrap Navbar */}
       <header className="navbar navbar-light bg-white border-bottom sticky-top">
-        <div className="container">
+        <div className="container"> 
           <a className="navbar-brand d-flex align-items-center" href="#">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Orange_logo.svg/2000px-Orange_logo.svg.png"

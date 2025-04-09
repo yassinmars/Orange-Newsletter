@@ -5,7 +5,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Calendar } from "lucide-react";
 import axios from "axios";
 
-const CreateNewsletter = ({ onClose }: { onClose: () => void }) => {
+const CreateNewsletter = ({ onClose, onNewsletterChanged }) => {
   const { toast } = useToast();
   const [Title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
@@ -46,6 +46,7 @@ const CreateNewsletter = ({ onClose }: { onClose: () => void }) => {
       .then((response) => {
         console.log("Newsletter Created successfully", response.data);
         onClose();
+        onNewsletterChanged();
       })
       .catch((error) => {
         console.error("There was an issue creating a newsletter", error);

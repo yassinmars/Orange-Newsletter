@@ -40,16 +40,35 @@ const NewsletterList = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [newsletters, setNewsletters] = useState([]);
   const [selectedNewsletterId, setSelectedNewsletterId] = useState();
+  const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
+  const fetchNewsletters = async () => {
     // Fetch newsletters data using axios
+    setIsLoading(true);
     axios
       .get("http://localhost:6005/api/newsletter")
       .then((res) => {
         setNewsletters(res.data.Newsletter); // Set the newsletters state with the extracted data
+        setIsLoading(false);
       })
       .catch((err) => console.error("Error fetching newsletters:", err));
+  };
+
+  useEffect(() => {
+    // Fetch newsletters data using axios
+    fetchNewsletters();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h2 className="mb-4">Page is loading, please wait.</h2>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   const handleDelete = (id: number) => {
     axios
@@ -67,10 +86,9 @@ const NewsletterList = () => {
       });
   };
 
-
   const filteredNewsletters = newsletters.filter((newsletter) =>
     newsletter.Title.toLowerCase().includes(searchTerm.toLowerCase())
-  );  
+  );
 
   return (
     <div className="space-y-5 p-4">
@@ -92,6 +110,7 @@ const NewsletterList = () => {
                   .querySelector<HTMLButtonElement>('[data-state="open"]')
                   ?.click()
               }
+              onNewsletterChanged={fetchNewsletters}
             />
           </DialogContent>
         </Dialog>
@@ -128,7 +147,6 @@ const NewsletterList = () => {
                     // You can manage the status of the newsletter with a handler
                     defaultValue={newsletter.Status}
                     onValueChange={(value: "draft" | "scheduled" | "sent") => {
-                      // Update status logic here (optional)
                     }}
                   >
                     <SelectTrigger className="w-[130px]">
@@ -159,7 +177,13 @@ const NewsletterList = () => {
                   <div className="flex justify-end space-x-2">
                     <Dialog>
                       <DialogTrigger asChild>
-                        <Button variant="outline" size="icon" onClick={() => {setSelectedNewsletterId(newsletter.id)}}>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => {
+                            setSelectedNewsletterId(newsletter.id);
+                          }}
+                        >
                           <Edit className="h-4 w-4 text-orange-500" />
                         </Button>
                       </DialogTrigger>
@@ -173,6 +197,8 @@ const NewsletterList = () => {
                               )
                               ?.click()
                           }
+                          onNewsletterChanged={fetchNewsletters}
+                          newsletter={newsletters}
                         />
                       </DialogContent>
                     </Dialog>

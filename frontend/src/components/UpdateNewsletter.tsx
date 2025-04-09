@@ -5,17 +5,18 @@ import { useToast } from "@/components/ui/use-toast";
 import { Calendar } from "lucide-react";
 import axios from "axios";
 
-const UpdateNewsLetter = ({ onClose, id }) => {
-  const { toast } = useToast();
-  const [Title, setTitle] = useState("");
-  const [Description, setDescription] = useState("");
-  const [Date, setScheduledDate] = useState("");
-  const [Category, setCategory] = useState("");
-  const [Links, setLinks] = useState("");
-  const [Image, setImage] = useState("");
-  const [Video, setVideo] = useState("");
-
+const UpdateNewsLetter = ({ onClose, id, onNewsletterChanged, newsletter }) => {
   const newsletterId = id;
+  const item = newsletter.find((n) => n.id === newsletterId);
+
+  const { toast } = useToast();
+  const [Title, setTitle] = useState(item.Title);
+  const [Description, setDescription] = useState(item.Description);
+  const [Date, setScheduledDate] = useState(item.Date);
+  const [Category, setCategory] = useState(item.Category);
+  const [Links, setLinks] = useState(item.Links);
+  const [Image, setImage] = useState("");
+  const [Video, setVideo] = useState(item.Video);
 
   const handleUpdate = (e) => {
     e.preventDefault();
@@ -38,7 +39,7 @@ const UpdateNewsLetter = ({ onClose, id }) => {
       .then((res) => {
         console.log("Newsletter updated successfully");
         toast({ title: "Newsletter updated successfully", status: "success" });
-        console.log(res.data.newsletter);
+        onNewsletterChanged(); // Call the function to refresh the newsletter list
       })
       .catch((e) => {
         console.error("Failed to update the Newsletter", e);

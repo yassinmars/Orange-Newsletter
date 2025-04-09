@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Mail, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,41 +5,49 @@ import { useToast } from "@/hooks/use-toast";
 import { Newsletter } from "@/types/newsletter";
 import NewsletterGrid from "./newsletter/NewsletterGrid";
 import SendDialog from "./newsletter/SendDialog";
-import { generateEmailContent, openEmailClient } from "./newsletter/EmailContentGenerator";
-import { useContext } from "react";
-import { NewsletterContext } from "../context/NewsletterContext";
+import {
+  generateEmailContent,
+  openEmailClient,
+} from "./newsletter/EmailContentGenerator";
+import axios from "axios";
+import { Send } from "lucide-react";
+import { SquareDashedMousePointer } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const SendNewsletter = () => {
   const { toast } = useToast();
-  // const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
   const [selectedNewsletters, setSelectedNewsletters] = useState<number[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [previewMode, setPreviewMode] = useState(false);
+  const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
 
-  // useEffect(() => {
-  //   fetchNewsletters();
-  // }, []);
+  const navigate = useNavigate();
 
-  const { newsletters } = useContext(NewsletterContext); // Access data from context
-  console.log(newsletters);
+  const fetchNewsletters = async () => {
+    setIsLoading(true);
+    axios
+      .get("http://localhost:6005/api/newsletter")
+      .then((res) => {
+        setNewsletters(res.data.Newsletter); // Set the newsletters state
+        setIsLoading(false);
+      })
+      .catch((err) => console.error("Error fetching newsletters:", err));
+  };
 
-  // const fetchNewsletters = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     const data = await getNewsletters();
-  //     // Ensure we're setting an array
-  //     setNewsletters(Array.isArray(data) ? data : []);
-  //   } catch (error) {
-  //     toast({
-  //       title: "Error",
-  //       description: "Failed to fetch newsletters",
-  //       variant: "destructive",
-  //     });
-  //     setNewsletters([]);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  useEffect(() => {
+    fetchNewsletters();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1 className="mb-4">Page is loading, please wait.</h1>
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
   const toggleNewsletter = (id: number) => {
     setSelectedNewsletters((prev) =>
@@ -69,12 +76,16 @@ const SendNewsletter = () => {
   };
 
   const filteredNewsletters = previewMode
-    ? newsletters.filter((newsletter) => selectedNewsletters.includes(newsletter.id))
+    ? newsletters.filter((newsletter) =>
+        selectedNewsletters.includes(newsletter.id)
+      )
     : newsletters;
 
-  // if (isLoading) {
-  //   return <div className="text-center py-10">Loading newsletters...</div>;
-  // }
+  const filteredNewslettersData = newsletters.filter((newsletter) =>
+    selectedNewsletters.includes(newsletter.id)
+  );
+
+  console.log(filteredNewslettersData);
 
   return (
     <div className="space-y-5 p-4">
@@ -94,11 +105,27 @@ const SendNewsletter = () => {
             <Eye className="h-4 w-4" />
             <span>{previewMode ? "Show All" : "Preview Selected"}</span>
           </Button>
-          <SendDialog 
+          <SendDialog
             selectedNewsletters={selectedNewsletters}
             newsletters={newsletters}
             onSendEmail={handleSendEmail}
           />
+        </div>
+        <div className="flex space-x-2">
+          <Button
+            className="bg-orange-500 hover:bg-orange-600"
+            disabled={selectedNewsletters.length === 0}
+            onClick={() =>
+              navigate("/templates", {
+                state: {
+                  filteredNewslettersData: filteredNewslettersData,
+                },
+              })
+            }
+          >
+            <SquareDashedMousePointer className="h-4 w-4 mr-2" /> Select
+            Newsletters
+          </Button>
         </div>
       </div>
 

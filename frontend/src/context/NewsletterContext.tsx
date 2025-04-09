@@ -14,6 +14,7 @@ export const NewsletterProvider = ({ children }) => {
       .get("http://localhost:6005/api/newsletter")
       .then((res) => {
         setNewsletters(res.data.Newsletter); // Set the newsletters state with the fetched data
+        console.log(newsletters);
       })
       .catch((err) => console.error("Error fetching newsletters:", err));
   }, []);

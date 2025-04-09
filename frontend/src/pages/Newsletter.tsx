@@ -1,16 +1,13 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect} from "react";
 import NewsletterList from "../components/NewsletterList";
 import SendNewsletter from "@/components/SendNewsletter";
 import { Mail, List } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import axios from "axios";
-import { NewsletterProvider } from "../context/NewsletterContext";
 
 function Newsletter() {
-  const NewsletterContext = createContext();
 
   return (
-    <NewsletterProvider>
       <div>
         <Tabs
           defaultValue="manage"
@@ -35,7 +32,6 @@ function Newsletter() {
           </TabsContent>
         </Tabs>
       </div>
-    </NewsletterProvider>
   );
 }
 

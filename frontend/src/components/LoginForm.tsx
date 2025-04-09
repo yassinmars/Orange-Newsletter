@@ -41,7 +41,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="vh-100 d-flex flex-column">
+    <div className="vh-100 d-flex flex-column bg-dark">
       <div className="flex-grow-1 d-flex align-items-center justify-content-center">
         <div className="card shadow p-4" style={{ width: "350px" }}>
           <div className="text-center">
@@ -82,10 +82,15 @@ const LoginForm = () => {
                 required
               />
             </div>
-            <button type="submit" className="btn btn-warning w-100">
+            <button type="submit" className="btn btn-primary w-100">
               Sign in
             </button>
           </form>
+
+          <p className="text-center mt-3">
+            Forgot Password?{" "}
+            <a href="https://orange.tn/assistance">Contact Orange Staff</a>
+          </p>
         </div>
       </div>
 

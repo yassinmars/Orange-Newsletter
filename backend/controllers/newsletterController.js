@@ -30,19 +30,27 @@ const getOneNewsletter = async (req, res) => {
 const postNewsletter = async (req, res) => {
   try {
     const newNewsletter = req.body;
-    console.log(newNewsletter);
+
+    // Create public URL path to image (to be used on frontend)
+    const imageUrl = req.file ? `/assets/${req.file.filename}` : null;
+
+    // Add image info to the object that will be saved
     if (req.file) {
-      newNewsletter.filePath = req.file.path; // Store uploaded file path
+      newNewsletter.Image = imageUrl; // Public URL for frontend
     }
 
     const createdNewsletter = await Newsletter.create(newNewsletter);
-    res
-      .status(200)
-      .json({ newsletter: createdNewsletter, msg: "newsletter created successfully" });
+
+    res.status(200).json({
+      newsletter: createdNewsletter,
+      msg: "Newsletter created successfully",
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({ msg: "Error on adding newsletter:", error: error.message });
+    console.error("Newsletter creation error:", error);
+    res.status(500).json({
+      msg: "Error on adding newsletter:",
+      error: error.message,
+    });
   }
 };
 
@@ -58,7 +66,7 @@ const putNewsletter = async (req, res) => {
     }
 
     await foundNewsletter.update(updatedNewsletter);
-    
+
     res.status(200).json({
       msg: "Newsletter has been updated successfully",
       updatedNewsletter: foundNewsletter,
@@ -69,19 +77,24 @@ const putNewsletter = async (req, res) => {
   }
 };
 
-const deleteNewsletter = async(req, res) =>{
+const deleteNewsletter = async (req, res) => {
   const NewsletterId = req.params.id;
   try {
-  const foundNewsletter = await Newsletter.findByPk(NewsletterId);
-  if(!foundNewsletter){
-    res.status(404).json({msg:"Newsletter not found"});
-  }
-  await foundNewsletter.destroy();
-  res.status(200).json({msg:"Newsletter deleted successfully"});
+    const foundNewsletter = await Newsletter.findByPk(NewsletterId);
+    if (!foundNewsletter) {
+      res.status(404).json({ msg: "Newsletter not found" });
+    }
+    await foundNewsletter.destroy();
+    res.status(200).json({ msg: "Newsletter deleted successfully" });
   } catch (error) {
-    res.status(500).json({msg:"internal server error"});
+    res.status(500).json({ msg: "internal server error" });
   }
-}
+};
 
-
-module.exports = {getNewsletter, postNewsletter, putNewsletter, deleteNewsletter, getOneNewsletter};
+module.exports = {
+  getNewsletter,
+  postNewsletter,
+  putNewsletter,
+  deleteNewsletter,
+  getOneNewsletter,
+};

@@ -1,4 +1,3 @@
-
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Card,
@@ -9,6 +8,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Newsletter } from "@/types/newsletter";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface NewsletterCardProps {
   newsletter: Newsletter;
@@ -36,48 +37,54 @@ const NewsletterCard = ({
         </div>
       )}
       <CardHeader>
-        <CardTitle className="line-clamp-2">{newsletter.title}</CardTitle>
+        <CardTitle className="line-clamp-2">{newsletter.Title}</CardTitle>
         <CardDescription>
-          Created: {new Date(newsletter.createdAt).toLocaleDateString()}
+          Created: {new Date(newsletter.Date).toLocaleDateString()}
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {newsletter.description && (
-          <p className="line-clamp-3 text-sm text-gray-600 mb-2">
-            {newsletter.description}
-          </p>
-        )}
-        {newsletter.image && (
-          <div className="aspect-video overflow-hidden rounded-md mb-2">
-            <img 
-              src={newsletter.image} 
-              alt={newsletter.title} 
-              className="h-full w-full object-cover transition-all hover:scale-105"
+        {newsletter.Image && (
+          <div className="h-48 overflow-hidden rounded-md mb-2">
+            <img
+              src={`http://localhost:6005${newsletter.Image}`}
+              alt={newsletter.Title}
+              className="h-full w-full object-fill transition-all hover:scale-105"
             />
           </div>
         )}
-        {newsletter.author && (
-          <p className="text-xs text-gray-500">Author: {newsletter.author}</p>
+
+        {newsletter.Description && (
+          <p className="line-clamp-3 text-sm text-gray-600 mb-2">
+            {newsletter.Description}
+          </p>
         )}
-        {newsletter.source && (
-          <p className="text-xs text-gray-500">Source: {newsletter.source}</p>
+        {newsletter.Links && (
+          <p className="text-xs text-gray-500 mb-2">
+            Source: {newsletter.Links}
+          </p>
+        )}
+
+        {newsletter.Video && (
+          <p className="text-xs text-gray-500">Video URL: {newsletter.Video}</p>
         )}
       </CardContent>
       <CardFooter className="flex justify-between">
         <div className="flex items-center">
-          <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
-            newsletter.status === 'draft' 
-              ? 'bg-orange-50 text-orange-800'
-              : newsletter.status === 'scheduled'
-              ? 'bg-orange-100 text-orange-800'
-              : 'bg-orange-200 text-orange-800'
-          }`}>
-            {newsletter.status}
+          <span
+            className={`inline-flex items-center px-2 py-1 rounded-full text-xs ${
+              newsletter.Status === "draft"
+                ? "bg-orange-50 text-orange-800"
+                : newsletter.Status === "scheduled"
+                ? "bg-orange-100 text-orange-800"
+                : "bg-orange-200 text-orange-800"
+            }`}
+          >
+            {newsletter.Status}
           </span>
         </div>
-        {newsletter.link && (
+        {newsletter.Link && (
           <a
-            href={newsletter.link}
+            href={newsletter.Link}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-orange-500 hover:underline"

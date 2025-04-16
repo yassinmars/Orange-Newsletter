@@ -1,25 +1,47 @@
+// Load environment variables
+require("dotenv").config();
+
+// Imports
 const express = require("express");
+const cors = require("cors");
+const http = require("http");
+
+const { searchGoogle } = require("./scrape");
 const newsletterRoute = require("./routes/newsletterRoute");
 const { connectDb } = require("./configuration/connectdb");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const http = require("http");
+
+// Initialize Express app
 const app = express();
-
-
-dotenv.config();
 app.use(cors());
+app.use(express.json());
 
-const port = process.env.PORT;
+// Connect to database
 connectDb();
 
-app.listen(port, (err) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(`server is running on port ${port}`);
+// Define routes
+app.use("/api", newsletterRoute);
+
+// Add /search route for scraping and sentiment analysis
+app.get("/search", async (req, res) => {
+  const query = req.query.q;
+  if (!query) {
+    return res.status(400).json({ error: "Query parameter is required" });
+  }
+
+  try {
+    const articles = await searchGoogle(query);
+    res.json(articles);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch search results" });
   }
 });
 
-app.use(express.json());
-app.use("/api", newsletterRoute);
+// Start the server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, (err) => {
+  if (err) {
+    console.error("Server error:", err);
+  } else {
+    console.log(`Server running on port ${PORT}`);
+  }
+});

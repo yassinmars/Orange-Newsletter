@@ -41,7 +41,7 @@ function Navbar() {
               News
             </NavLink>
           </li>
-          <li className="nav-item">
+          {/* <li className="nav-item">
             <NavLink
               to="/templates"
               className="nav-link text-white"
@@ -49,7 +49,7 @@ function Navbar() {
             >
               Templates
             </NavLink>
-          </li>
+          </li> */}
 
           {/* Log out button on the far right */}
           <li className="ms-auto">

@@ -9,7 +9,7 @@ import Navbar from "./pages/NavBar";
 import Homepage from "./components/Homepage";
 import Newsletter from "./pages/Newsletter";
 import Footer from "./pages/Footer";
-import Template from "./components/template/Template";
+import SelectTemplate from "./components/template/SelectTemplate";
 import CreateTemplate from "./components/template/CreateTemplate";
 
 const queryClient = new QueryClient();
@@ -42,7 +42,7 @@ const AppContent = () => {
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="/news" element={<Newsletter />} />
         <Route path="/home" element={<Homepage />} />
-        <Route path="/templates" element={<Template />} />
+        <Route path="/selectTemplate" element={<SelectTemplate />} />
         <Route path="/createTemplate" element={<CreateTemplate />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

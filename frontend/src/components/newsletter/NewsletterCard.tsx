@@ -48,7 +48,7 @@ const NewsletterCard = ({
             <img
               src={`http://localhost:6005${newsletter.Image}`}
               alt={newsletter.Title}
-              className="h-full w-full object-fill transition-all hover:scale-105"
+              className="h-full w-full object-contain transition-all hover:scale-105"
             />
           </div>
         )}

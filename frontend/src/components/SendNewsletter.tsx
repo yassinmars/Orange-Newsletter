@@ -116,7 +116,7 @@ const SendNewsletter = () => {
             className="bg-orange-500 hover:bg-orange-600"
             disabled={selectedNewsletters.length === 0}
             onClick={() =>
-              navigate("/templates", {
+              navigate("/selectTemplate", {
                 state: {
                   filteredNewslettersData: filteredNewslettersData,
                 },

@@ -25,7 +25,7 @@ type Template = {
 
 import { useLocation } from "react-router-dom";
 
-const Template = () => {
+const SelectTemplate = () => {
   const [templates, setTemplates] = useState<Template[]>([]);
   const [editingName, setEditingName] = useState<string | null>(null);
   const [newTemplateName, setNewTemplateName] = useState("");
@@ -217,4 +217,4 @@ const Template = () => {
   );
 };
 
-export default Template;
+export default SelectTemplate;

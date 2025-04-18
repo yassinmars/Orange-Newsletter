@@ -34,7 +34,7 @@ function Footer() {
               </a>
             </li>
             <li>
-              <a href="#" className="btn btn-icon btn-social btn-youtube">
+              <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"className="btn btn-icon btn-social btn-youtube">
                 <span className="visually-hidden">YouTube</span>
               </a>
             </li>

@@ -38,6 +38,8 @@ const SendNewsletter = () => {
     fetchNewsletters();
   }, []);
 
+  
+
   if (isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
@@ -86,7 +88,6 @@ const SendNewsletter = () => {
   );
 
   console.log(filteredNewslettersData);
-
   return (
     <div className="space-y-5 p-4">
       <div className="flex justify-between items-center mb-6">

@@ -5,7 +5,7 @@ export const generateEmailContent = (selectedItems: Newsletter[]): { subject: st
   const subject = "Orange Newsletters - Latest Updates";
   
   // The HTML version will be kept for potential future use
-  let htmlContent = `
+  let htmlContent = ` 
 <!DOCTYPE html>
 <html>
 <head>

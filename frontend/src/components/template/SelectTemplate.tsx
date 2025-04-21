@@ -199,7 +199,7 @@ const SelectTemplate = () => {
         </div>
 
         <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-gray-900">Your Templates</h2>
+          <h2 className="text-2xl font-bold text-gray-900">Your Newsletters</h2>
           {templates.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow-md">
               <p className="text-gray-500">

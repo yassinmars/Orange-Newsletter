@@ -49,7 +49,7 @@ const CreateNewsletter = ({ onClose, onNewsletterChanged }) => {
         onNewsletterChanged();
       })
       .catch((error) => {
-        console.error("There was an issue creating a newsletter", error);
+        console.error("There was an issue creating a news", error);
       });
     onClose();
   };
@@ -57,7 +57,7 @@ const CreateNewsletter = ({ onClose, onNewsletterChanged }) => {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-gray-900">Create Newsletter</h2>
+      <h2 className="text-2xl font-bold text-gray-900">Create News</h2>
       <form onSubmit={handleSubmit} className="space-y-1" enctype="multipart/form-data">
         <div>
           <label
@@ -70,7 +70,7 @@ const CreateNewsletter = ({ onClose, onNewsletterChanged }) => {
             id="Title"
             value={Title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter newsletter title"
+            placeholder="Enter news title"
             required
           />
         </div>
@@ -150,7 +150,7 @@ const CreateNewsletter = ({ onClose, onNewsletterChanged }) => {
             id="Description"
             value={Description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter newsletter Description"
+            placeholder="Enter news Description"
             className="w-full min-h-[200px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             required
           />
@@ -182,7 +182,7 @@ const CreateNewsletter = ({ onClose, onNewsletterChanged }) => {
             className="bg-orange-500 hover:bg-orange-600"
             onClick={handleSubmit}
           >
-            Create Newsletter
+            Create news
           </Button>
         </div>
       </form>

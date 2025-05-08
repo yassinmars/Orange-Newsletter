@@ -35,19 +35,20 @@ const AppContent = () => {
 
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       {!hidenavbar && <Navbar />}
-      <Routes>
-        <Route path="/" element={<LoginForm />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="/news" element={<Newsletter />} />
-        <Route path="/home" element={<Homepage />} />
-        <Route path="/selectTemplate" element={<SelectTemplate />} />
-        <Route path="/createTemplate" element={<CreateTemplate />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <div className="flex-grow">
+        <Routes>
+          <Route path="/" element={<LoginForm />} />
+          <Route path="/news" element={<Newsletter />} />
+          <Route path="/home" element={<Homepage />} />
+          <Route path="/selectTemplate" element={<SelectTemplate />} />
+          <Route path="/createTemplate" element={<CreateTemplate />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </div>
       {!hideFooter && <Footer />}
-    </>
+    </div>
   );
 };
 

@@ -27,7 +27,7 @@ function Navbar() {
             <NavLink
               to="/home"
               className="nav-link text-white"
-              activeClassName="active-link"
+              activeclassname="active-link"
             >
               Home
             </NavLink>
@@ -36,7 +36,7 @@ function Navbar() {
             <NavLink
               to="/news"
               className="nav-link text-white"
-              activeClassName="active-link"
+              activeclassname="active-link"
             >
               News
             </NavLink>

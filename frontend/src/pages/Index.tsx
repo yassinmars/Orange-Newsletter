@@ -8,13 +8,13 @@ const Index = () => {
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
 
-  const handleLogout = () => {
-    localStorage.removeItem("isAuthenticated");
-    setToastMessage("Logged out successfully");
-    setShowToast(true);
-    setTimeout(() => setShowToast(false), 3000);
-    window.location.reload();
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("isAuthenticated");
+  //   setToastMessage("Logged out successfully");
+  //   setShowToast(true);
+  //   setTimeout(() => setShowToast(false), 3000);
+  //   window.location.reload();
+  // };
 
   return (
     <div>
